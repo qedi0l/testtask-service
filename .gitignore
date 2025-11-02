@@ -19,4 +19,5 @@ yarn-error.log
 /.idea
 /.vscode
 .rr.yaml
+.rr.yaml~
 auth.json
