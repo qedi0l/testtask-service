@@ -1,0 +1,89 @@
+services:
+    app:
+        container_name: service
+        platform: linux/amd64
+        build:
+            context: './docker/8.3'
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+                VITE_PORT: '${CONTAINER_VITE_PORT}'
+                CONTAINER_APP_PORT: '${CONTAINER_APP_PORT}'
+        image: 'sail-8.3/app'
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        ports:
+            - '${APP_PORT:-8080}:${CONTAINER_APP_PORT:-8080}'
+            - '${VITE_PORT:-5173}:${CONTAINER_VITE_PORT:-5173}'
+        environment:
+            CONTAINER_APP_PORT: ${CONTAINER_APP_PORT:-8080}
+            CONTAINER_VITE_PORT: ${CONTAINER_VITE_PORT:-5173}
+            OCTANE_ENV: ${OCTANE_ENV}
+            WWWUSER: ${WWWUSER}
+            LARAVEL_SAIL: 1
+            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
+            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+            IGNITION_LOCAL_SITES_PATH: '${PWD}'
+            SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=roadrunner --host=0.0.0.0 --rpc-port=${CONTAINER_RPC_PORT:-6001} --port=${CONTAINER_APP_PORT:-8080}"
+            SUPERVISOR_PHP_SERVER_COMMAND: "/var/www/html/rr serve"
+        volumes:
+            - '.:/var/www/html'
+        entrypoint: ["./entrypoint.sh"]
+        networks:
+            - network
+        depends_on:
+            - pgsql
+
+    pgsql:
+        image: postgis/postgis:17-master
+        container_name: service_pgsql_container
+        restart: unless-stopped
+        environment:
+            - POSTGRES_PASSWORD=${DB_PASSWORD}
+            - POSTGRES_USER=${DB_USERNAME}
+            - POSTGRES_DB=${DB_DATABASE}
+            - PGDATA=/var/lib/postgresql/data/pgdata
+        volumes:
+            - ./pgdata/data":/var/lib/postgresql/data
+        networks:
+            - network
+        healthcheck:
+            test:
+                - CMD
+                - pg_isready
+                - '-q'
+                - '-d'
+                - '${DB_DATABASE}'
+                - '-U'
+                - '${DB_USERNAME}'
+            retries: 3
+            timeout: 5s
+        ports:
+            - ${FORWARD_DB_PORT:-5432}:5432
+
+#    minio:
+#        image: minio/minio:latest
+#        command: server --address ":9010" --console-address ":9011" /data
+#        tty: true
+#        ports:
+#            - "9010:9010/tcp"
+#            - "9011:9011/tcp"
+#        environment:
+#            MINIO_ROOT_USER: '${MINIO_ROOT_USER:-minio_admin}'
+#            MINIO_ROOT_PASSWORD: '${MINIO_ROOT_PASSWORD:-secret12345678}'
+#        volumes:
+#            - ./minio/data:/data
+#        healthcheck:
+#            test: [ "CMD", "curl", "-f", "http://localhost:9011/minio/health/live" ]
+#            interval: 30s
+#            timeout: 20s
+#            retries: 3
+
+networks:
+    network:
+        driver: bridge
+volumes:
+    redis:
+        driver: local
+    meilisearch:
+        driver: local

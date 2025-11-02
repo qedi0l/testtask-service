@@ -1,0 +1,609 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "service",
+        "description": "Swagger OpenApi documentation",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/organisations": {
+            "get": {
+                "tags": [
+                    "service"
+                ],
+                "summary": "",
+                "description": "get",
+                "operationId": "index",
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrganizationResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/422"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "service"
+                ],
+                "summary": "",
+                "description": "store",
+                "operationId": "store",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "building_id"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "$ref": "#/components/schemas/Organization/properties/name"
+                                    },
+                                    "building_id": {
+                                        "$ref": "#/components/schemas/Organization/properties/building_id"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrganizationResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404"
+                    }
+                }
+            }
+        },
+        "/api/organisations/{id}": {
+            "get": {
+                "tags": [
+                    "service"
+                ],
+                "summary": "",
+                "description": "show",
+                "operationId": "show",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrganizationResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/422"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "service"
+                ],
+                "summary": "",
+                "description": "update",
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrganizationResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/422"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "service"
+                ],
+                "summary": "",
+                "description": "delete",
+                "operationId": "delete",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/200"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404"
+                    }
+                }
+            }
+        },
+        "/api/organisations-by-building/{building_id}": {
+            "get": {
+                "tags": [
+                    "service"
+                ],
+                "summary": "",
+                "description": "Cписок всех организаций находящихся в конкретном здании",
+                "operationId": "organisations-by-building",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/building_id"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrganizationResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/422"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500"
+                    }
+                }
+            }
+        },
+        "/api/organisations-by-activity/{activity_id}": {
+            "get": {
+                "tags": [
+                    "service"
+                ],
+                "summary": "",
+                "description": "Cписок всех организаций, которые относятся к указанному виду деятельности",
+                "operationId": "organisations-by-activity",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/activity_id"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrganizationResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/422"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500"
+                    }
+                }
+            }
+        },
+        "/api/organisations-by-activities/{activity_id}": {
+            "get": {
+                "tags": [
+                    "service"
+                ],
+                "summary": "",
+                "description": "Искать организации по виду деятельности.",
+                "operationId": "organisations-by-activities",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/activity_id"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrganizationResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/422"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500"
+                    }
+                }
+            }
+        },
+        "/api/organisations-by-distance": {
+            "post": {
+                "tags": [
+                    "service"
+                ],
+                "summary": "",
+                "description": "Cписок организаций, которые находятся в заданном радиусе/прямоугольной области относительно указанной точки на карте",
+                "operationId": "organisations-by-distance",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/NearOrganisationsRequest"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BuildingResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "BuildingResource": {
+                "title": "BuildingResource",
+                "properties": {
+                    "data": {
+                        "title": "data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/BuildingResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "OrganizationResource": {
+                "title": "OrganizationResource",
+                "properties": {
+                    "data": {
+                        "title": "data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/OrganizationResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Activity": {
+                "title": "Model. Activity",
+                "description": "Activity model",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "title": "name",
+                        "type": "string",
+                        "example": "text"
+                    },
+                    "relatedActivities": {
+                        "$ref": "#/components/schemas/Activity"
+                    },
+                    "activities": {
+                        "$ref": "#/components/schemas/Activity"
+                    },
+                    "organizations": {
+                        "$ref": "#/components/schemas/Organization"
+                    }
+                },
+                "type": "object"
+            },
+            "Building": {
+                "title": "Model. Building",
+                "description": "Building model",
+                "required": [
+                    "address",
+                    "location"
+                ],
+                "properties": {
+                    "address": {
+                        "title": "address",
+                        "type": "string",
+                        "example": "text"
+                    },
+                    "location": {
+                        "title": "location",
+                        "type": "string",
+                        "example": "POINT(-71.064544 42.28787)"
+                    }
+                },
+                "type": "object"
+            },
+            "Organization": {
+                "title": "Model. Organization",
+                "description": "Organization model",
+                "required": [
+                    "name",
+                    "building_id"
+                ],
+                "properties": {
+                    "name": {
+                        "title": "name",
+                        "type": "string",
+                        "example": "text"
+                    },
+                    "building_id": {
+                        "title": "building_id",
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            },
+            "OrganizationActivities": {
+                "title": "Model. OrganizationActivities",
+                "description": "OrganizationActivities model",
+                "required": [
+                    "organization_id",
+                    "activity_id"
+                ],
+                "properties": {
+                    "name": {
+                        "title": "name",
+                        "type": "string",
+                        "example": "text"
+                    },
+                    "organization_id": {
+                        "$ref": "#/components/schemas/Organization"
+                    },
+                    "activity_id": {
+                        "$ref": "#/components/schemas/Activity"
+                    }
+                },
+                "type": "object"
+            },
+            "OrganizationPhone": {
+                "title": "Model. OrganizationPhone",
+                "description": "OrganizationPhone model",
+                "required": [
+                    "phone",
+                    "organization_id"
+                ],
+                "properties": {
+                    "phone": {
+                        "title": "phone",
+                        "type": "string",
+                        "example": "text"
+                    },
+                    "organization_id": {
+                        "$ref": "#/components/schemas/Organization"
+                    }
+                },
+                "type": "object"
+            },
+            "Phone": {
+                "title": "Model. Phone",
+                "description": "Phone model",
+                "required": [
+                    "phone"
+                ],
+                "properties": {
+                    "phone": {
+                        "title": "phone",
+                        "type": "string",
+                        "example": "text"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "responses": {
+            "404": {
+                "description": "Не найдено",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "title": "Сообщение об ошибке",
+                                    "type": "string",
+                                    "example": "Сущность [Сущность][ID] не найдена"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "500": {
+                "description": "Серверная ошибка",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "title": "Общее сообщение об ошибке",
+                                    "type": "string",
+                                    "example": "При вычислении свойств объекта произошла ошибка"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "200": {
+                "description": "Успешный ответ",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "success": {
+                                    "title": "Результат выполнения запроса",
+                                    "type": "boolean",
+                                    "example": true
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "422": {
+                "description": "Ошибка валидации",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "title": "Общее сообщение об ошибке",
+                                    "type": "string",
+                                    "example": ""
+                                },
+                                "errors": {
+                                    "title": "Массив ошибок непрошедшего валидацию поля (опциональный)",
+                                    "properties": {
+                                        "value": {
+                                            "title": "value",
+                                            "type": "string",
+                                            "example": "error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "id": {
+                "name": "id",
+                "in": "path",
+                "description": "ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "example": 1
+            },
+            "building_id": {
+                "name": "building_id",
+                "in": "path",
+                "description": "building_id",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "example": 1
+            },
+            "activity_id": {
+                "name": "activity_id",
+                "in": "path",
+                "description": "activity_id",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "example": 1
+            }
+        },
+        "requestBodies": {
+            "NearOrganisationsRequest": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "latitude",
+                                "longitude",
+                                "distance"
+                            ],
+                            "properties": {
+                                "latitude": {
+                                    "type": "integer",
+                                    "maximum": 90,
+                                    "minimum": -90,
+                                    "example": -45.54332
+                                },
+                                "longitude": {
+                                    "type": "integer",
+                                    "maximum": 180,
+                                    "minimum": -180,
+                                    "example": 65.32354
+                                },
+                                "distance": {
+                                    "type": "integer",
+                                    "example": 500
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "api_key": {
+                "type": "apiKey",
+                "name": "token",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "service",
+            "description": "service"
+        }
+    ]
+}

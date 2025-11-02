@@ -1,0 +1,13 @@
+version: "3"
+
+logs:
+  mode: development
+
+grpc:
+  listen: "tcp://0.0.0.0:${CONTAINER_GRPC_PORT:-8081}"
+
+  pool:
+    command: "php /var/www/html/app/Workers/grpc-worker.php"
+
+  proto:
+    - "/var/www/html/Protobuf/Protos/*.proto"
