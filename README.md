@@ -1,10 +1,11 @@
 # Testo_voe setup guide
 
 ## Project setup
-1. Clone repo 
-2. Build and run `make buildup`
-3. Seed db `make seed`
-4. Generate Swagger doc `make swagger`
+1. Clone repo
+2. Create .env from .env.example
+3. Build and run `make buildup`
+4. Seed db `make seed`
+5. Generate Swagger doc `make swagger`
 
 - API http://127.0.0.1:8080/api
 - API token `4oqOGoEUc0tCdrEmgVmEOaX6CCaMzkTYMCKw`
