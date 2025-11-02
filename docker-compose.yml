@@ -24,7 +24,7 @@ services:
             XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
             XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
             IGNITION_LOCAL_SITES_PATH: '${PWD}'
-            SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=roadrunner --host=0.0.0.0 --rpc-port=${CONTAINER_RPC_PORT:-6001} --port=${CONTAINER_APP_PORT:-8080}"
+            SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=roadrunner --host=0.0.0.0 --port=${CONTAINER_APP_PORT:-8080}"
             SUPERVISOR_PHP_SERVER_COMMAND: "/var/www/html/rr serve"
         volumes:
             - '.:/var/www/html'
@@ -60,24 +60,6 @@ services:
             timeout: 5s
         ports:
             - ${FORWARD_DB_PORT:-5432}:5432
-
-#    minio:
-#        image: minio/minio:latest
-#        command: server --address ":9010" --console-address ":9011" /data
-#        tty: true
-#        ports:
-#            - "9010:9010/tcp"
-#            - "9011:9011/tcp"
-#        environment:
-#            MINIO_ROOT_USER: '${MINIO_ROOT_USER:-minio_admin}'
-#            MINIO_ROOT_PASSWORD: '${MINIO_ROOT_PASSWORD:-secret12345678}'
-#        volumes:
-#            - ./minio/data:/data
-#        healthcheck:
-#            test: [ "CMD", "curl", "-f", "http://localhost:9011/minio/health/live" ]
-#            interval: 30s
-#            timeout: 20s
-#            retries: 3
 
 networks:
     network:
