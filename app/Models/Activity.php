@@ -51,7 +51,7 @@ class Activity extends Model
 
     public function activities()
     {
-        return $this->morphedByMany(Activity::class, 'activity', 'activity_activity','activity_id');
+        return $this->morphedByMany(Activity::class, 'activity', 'activity_activity','activity_id','related_activity_id');
     }
 
     public function organizations()

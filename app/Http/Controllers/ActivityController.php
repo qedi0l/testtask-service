@@ -159,17 +159,17 @@ class ActivityController extends Controller
     public function appendActivity(Request $request, int $activityId)
     {
         $activity = Activity::findOrFail($activityId);
+        $data = $request->validate([
+            'activity_id' => 'integer',
+        ]);
 
-        if ($this->checkChildActivity($activity)){
-            $data = $request->validate([
-                'activity_id' => 'integer',
-            ]);
+        if (($activityId!==$data['activity_id']) && $this->checkChildActivity($activity)){
 
-            $activity->relatedActivities()->attach($data['activity_id']);
+            $activity->activities()->attach($data['activity_id']);
 
             return response()->noContent();
         }
-        return response()->noContent(400);
+        return response()->json('max sub-activities: 3',400);
     }
 
 
@@ -179,19 +179,18 @@ class ActivityController extends Controller
 
         function getChildActivities(Activity $activity, &$allActivities)
         {
-            foreach ($activity->relatedActivities as $relatedActivity) {
+            foreach ($activity->activities as $relatedActivity) {
                 if (!$allActivities->contains($relatedActivity)) {
                     $allActivities->push($relatedActivity);
                     getChildActivities($relatedActivity, $allActivities);
                 }
             }
         }
+        getChildActivities($mainActivity, $allActivities);
 
-        if ($allActivities->count() >= 3){
+        if ($allActivities->count() > 3){
             return false;
         }
-
-        getChildActivities($mainActivity, $allActivities);
 
         return true;
     }
