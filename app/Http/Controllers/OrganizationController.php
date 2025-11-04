@@ -13,11 +13,10 @@ use App\Virtual\Responses\ServerErrorResponse;
 use App\Virtual\Responses\SuccessResponse;
 use App\Virtual\Responses\UnprocessableResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use OpenApi\Attributes\Delete;
 use OpenApi\Attributes\Get;
-use OpenApi\Attributes\Info;
 use OpenApi\Attributes\JsonContent;
 use OpenApi\Attributes\Parameter;
 use OpenApi\Attributes\Post;
@@ -25,20 +24,11 @@ use OpenApi\Attributes\Property;
 use OpenApi\Attributes\Put;
 use OpenApi\Attributes\RequestBody;
 use OpenApi\Attributes\Response;
-use OpenApi\Attributes\Tag;
-
-#[Info(
-    version: '1.0.0',
-    description: 'Swagger OpenApi documentation',
-    title: 'service',
-)]
-
-#[Tag(name: 'service', description: 'service')]
 
 #[Get(
     path: '/api/organisations', operationId: 'index',
     description: 'get', summary: '',
-    tags: ['service'],
+    tags: ['organisations'],
     responses: [
         new Response(
             response: 200,
@@ -58,7 +48,7 @@ use OpenApi\Attributes\Tag;
             new Property(property: 'building_id', ref: '#/components/schemas/Organization/properties/building_id', type: 'integer'),
         ]
     )),
-    tags: ['service'],
+    tags: ['organisations'],
     responses: [
         new Response(
             response: 200,
@@ -71,7 +61,7 @@ use OpenApi\Attributes\Tag;
 #[Get(
     path: '/api/organisations/{id}', operationId: 'show',
     description: 'show', summary: '',
-    tags: ['service'],
+    tags: ['organisations'],
     parameters: [new Parameter(ref: '#/components/parameters/id')],
     responses: [
         new Response(
@@ -86,7 +76,7 @@ use OpenApi\Attributes\Tag;
 #[Put(
     path: '/api/organisations/{id}', operationId: 'update',
     description: 'update', summary: '',
-    tags: ['service'],
+    tags: ['organisations'],
     parameters: [new Parameter(ref: '#/components/parameters/id')],
     responses: [
         new Response(
@@ -102,7 +92,7 @@ use OpenApi\Attributes\Tag;
 #[Delete(
     path: '/api/organisations/{id}', operationId: 'delete',
     description: 'delete', summary: '',
-    tags: ['service'],
+    tags: ['organisations'],
     parameters: [new Parameter(ref: '#/components/parameters/id')],
     responses: [
         new Response(ref: SuccessResponse::class, response: 200),
@@ -112,7 +102,7 @@ use OpenApi\Attributes\Tag;
 #[Get(
     path: '/api/organisations-by-building/{building_id}', operationId: 'organisations-by-building',
     description: 'Cписок всех организаций находящихся в конкретном здании', summary: '',
-    tags: ['service'],
+    tags: ['organisations'],
     parameters: [new Parameter(ref: '#/components/parameters/building_id')],
     responses: [
         new Response(
@@ -127,7 +117,7 @@ use OpenApi\Attributes\Tag;
 #[Get(
     path: '/api/organisations-by-activity/{activity_id}', operationId: 'organisations-by-activity',
     description: 'Cписок всех организаций, которые относятся к указанному виду деятельности', summary: '',
-    tags: ['service'],
+    tags: ['organisations'],
     parameters: [new Parameter(ref: '#/components/parameters/activity_id')],
     responses: [
         new Response(
@@ -142,7 +132,7 @@ use OpenApi\Attributes\Tag;
 #[Get(
     path: '/api/organisations-by-activities/{activity_id}', operationId: 'organisations-by-activities',
     description: 'Искать организации по виду деятельности.', summary: '',
-    tags: ['service'],
+    tags: ['organisations'],
     parameters: [new Parameter(ref: '#/components/parameters/activity_id')],
     responses: [
         new Response(
@@ -158,7 +148,7 @@ use OpenApi\Attributes\Tag;
     path: '/api/organisations-by-distance', operationId: 'organisations-by-distance',
     description: 'Cписок организаций, которые находятся в заданном радиусе/прямоугольной области относительно указанной точки на карте', summary: '',
     requestBody: new RequestBody(ref: NearOrganisationsRequest::class),
-    tags: ['service'],
+    tags: ['organisations'],
     responses: [
         new Response(
             response: 200,
@@ -168,13 +158,10 @@ use OpenApi\Attributes\Tag;
         new Response(ref: NotFoundResponse::class, response: 404),
     ]
 )]
-
 class OrganizationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function index(): ResourceCollection
     {
         $organization = Organization::query()
             ->with('building')
@@ -183,9 +170,6 @@ class OrganizationController extends Controller
         return OrganizationResource::collection($organization);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request): OrganizationResource
     {
         $data = $request->validate([
@@ -198,10 +182,7 @@ class OrganizationController extends Controller
         return OrganizationResource::make($organization);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(int $id)
+    public function show(int $id): OrganizationResource
     {
         $organization = Organization::query()
             ->with('building')
@@ -210,52 +191,52 @@ class OrganizationController extends Controller
         return OrganizationResource::make($organization);
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, int $id): OrganizationResource
     {
         $organization = Organization::findOrFail($id);
         $data = $request->validate([
             'name' => 'string',
-            'description' => 'nullable|string',
+            'building_id' => 'integer',
         ]);
 
         $organization->update($data);
         return OrganizationResource::make($organization);
     }
 
-    public function destroy(string $id)
+    public function destroy(int $id): \Illuminate\Http\Response
     {
         $organization = Organization::findOrFail($id);
         $organization->delete();
         return response()->noContent();
     }
 
-    public function getOrganisationsByBuildingId(int $building_id): JsonResource
+    public function getOrganisationsByBuildingId(int $building_id): ResourceCollection
     {
         $result = Organization::query()
-            ->where('building_id',$building_id)
+            ->where('building_id', $building_id)
             ->simplePaginate(50);
 
         return OrganizationResource::collection($result);
     }
 
-    public function getOrganisationByActivityId(int $activity_id): JsonResource
+    public function getOrganisationByActivityId(int $activity_id): ResourceCollection
     {
         $result = Organization::query()
             ->select('organizations.*')
-            ->leftjoin('organization_activities','organizations.id','=','organization_activities.organization_id')
+            ->leftjoin('organization_activities', 'organizations.id', '=', 'organization_activities.organization_id')
             ->where('organization_activities.activity_id', $activity_id)
             ->simplePaginate(50);
 
         return OrganizationResource::collection($result);
     }
 
-    public function getOrganisationsNearPoint(NearOrganisationsRequest $request): JsonResource
+    public function getOrganisationsNearPoint(NearOrganisationsRequest $request): ResourceCollection
     {
         $data = $request->validated();
-        $point = new Point($data['latitude'], $data['longitude'],'4326');
+        $point = new Point($data['latitude'], $data['longitude'], '4326');
 
         $result = Building::query()
-            ->whereDistance('location',$point,'<=', $data['distance'])
+            ->whereDistance('location', $point, '<=', $data['distance'])
             ->simplePaginate(500);
 
         return BuildingResource::collection($result);

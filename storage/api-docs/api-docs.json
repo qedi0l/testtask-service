@@ -6,10 +6,196 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/activities": {
+            "get": {
+                "tags": [
+                    "activities"
+                ],
+                "summary": "",
+                "description": "get",
+                "operationId": "indexActivity",
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ActivityResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/422"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "activities"
+                ],
+                "summary": "",
+                "description": "store",
+                "operationId": "storeActivity",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "building_id"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "$ref": "#/components/schemas/Organization/properties/name"
+                                    },
+                                    "building_id": {
+                                        "$ref": "#/components/schemas/Organization/properties/building_id"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ActivityResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404"
+                    }
+                }
+            }
+        },
+        "/api/activities/{id}": {
+            "get": {
+                "tags": [
+                    "activities"
+                ],
+                "summary": "",
+                "description": "show",
+                "operationId": "showActivity",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ActivityResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/422"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "activities"
+                ],
+                "summary": "",
+                "description": "update",
+                "operationId": "updateActivity",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ActivityResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/422"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "activities"
+                ],
+                "summary": "",
+                "description": "delete",
+                "operationId": "deleteActivity",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/200"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404"
+                    }
+                }
+            }
+        },
+        "/api/append-activity/{id}": {
+            "post": {
+                "tags": [
+                    "activities"
+                ],
+                "summary": "",
+                "description": "append child activity",
+                "operationId": "appendActivity",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/AppendActivityRequest"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/200"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/404"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/500"
+                    }
+                }
+            }
+        },
         "/api/organisations": {
             "get": {
                 "tags": [
-                    "service"
+                    "organisations"
                 ],
                 "summary": "",
                 "description": "get",
@@ -32,7 +218,7 @@
             },
             "post": {
                 "tags": [
-                    "service"
+                    "organisations"
                 ],
                 "summary": "",
                 "description": "store",
@@ -78,7 +264,7 @@
         "/api/organisations/{id}": {
             "get": {
                 "tags": [
-                    "service"
+                    "organisations"
                 ],
                 "summary": "",
                 "description": "show",
@@ -109,7 +295,7 @@
             },
             "put": {
                 "tags": [
-                    "service"
+                    "organisations"
                 ],
                 "summary": "",
                 "description": "update",
@@ -143,7 +329,7 @@
             },
             "delete": {
                 "tags": [
-                    "service"
+                    "organisations"
                 ],
                 "summary": "",
                 "description": "delete",
@@ -166,7 +352,7 @@
         "/api/organisations-by-building/{building_id}": {
             "get": {
                 "tags": [
-                    "service"
+                    "organisations"
                 ],
                 "summary": "",
                 "description": "Cписок всех организаций находящихся в конкретном здании",
@@ -199,7 +385,7 @@
         "/api/organisations-by-activity/{activity_id}": {
             "get": {
                 "tags": [
-                    "service"
+                    "organisations"
                 ],
                 "summary": "",
                 "description": "Cписок всех организаций, которые относятся к указанному виду деятельности",
@@ -232,7 +418,7 @@
         "/api/organisations-by-activities/{activity_id}": {
             "get": {
                 "tags": [
-                    "service"
+                    "organisations"
                 ],
                 "summary": "",
                 "description": "Искать организации по виду деятельности.",
@@ -265,7 +451,7 @@
         "/api/organisations-by-distance": {
             "post": {
                 "tags": [
-                    "service"
+                    "organisations"
                 ],
                 "summary": "",
                 "description": "Cписок организаций, которые находятся в заданном радиусе/прямоугольной области относительно указанной точки на карте",
@@ -293,6 +479,19 @@
     },
     "components": {
         "schemas": {
+            "ActivityResource": {
+                "title": "ActivityResource",
+                "properties": {
+                    "data": {
+                        "title": "data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ActivityResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "BuildingResource": {
                 "title": "BuildingResource",
                 "properties": {
@@ -559,6 +758,26 @@
             }
         },
         "requestBodies": {
+            "AppendActivityRequest": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "latitude",
+                                "longitude",
+                                "distance"
+                            ],
+                            "properties": {
+                                "activity_id": {
+                                    "type": "integer",
+                                    "example": 1
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
             "NearOrganisationsRequest": {
                 "content": {
                     "application/json": {
@@ -602,8 +821,12 @@
     },
     "tags": [
         {
-            "name": "service",
-            "description": "service"
+            "name": "activities",
+            "description": "activities"
+        },
+        {
+            "name": "organisations",
+            "description": "organisations"
         }
     ]
 }
