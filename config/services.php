@@ -31,4 +31,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'amazon' => [
+        'seller_endpoint' => 'https://sellingpartnerapi-na.amazon.com',
+        'fba_out' => '/fba/outbound/2020-07-01',
+        'x-amz-access-token' => 'Atza|XXXXXXXXXXXXXXX'
+    ]
 ];

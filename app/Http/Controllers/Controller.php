@@ -13,6 +13,7 @@ use OpenApi\Attributes\Tag;
     description: 'Swagger OpenApi documentation',
     title: 'service',
 )]
+#[Tag(name: 'amazonFBA', description: 'amazonFBA')]
 #[Tag(name: 'activities', description: 'activities')]
 #[Tag(name: 'organizations', description: 'organizations')]
 

@@ -475,6 +475,35 @@
                     }
                 }
             }
+        },
+        "/api/fulfill-seller-order": {
+            "post": {
+                "tags": [
+                    "amazonFBA"
+                ],
+                "summary": "",
+                "description": "fulfillOrder",
+                "operationId": "fulfillOrder",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/FulfilSellerOrderRequest"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/200"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/404"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/500"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -778,6 +807,24 @@
                     }
                 }
             },
+            "FulfilSellerOrderRequest": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "order_id"
+                            ],
+                            "properties": {
+                                "order_id": {
+                                    "type": "integer",
+                                    "example": 1
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
             "NearOrganisationsRequest": {
                 "content": {
                     "application/json": {
@@ -820,6 +867,10 @@
         }
     },
     "tags": [
+        {
+            "name": "amazonFBA",
+            "description": "amazonFBA"
+        },
         {
             "name": "activities",
             "description": "activities"

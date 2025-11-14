@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\ShippingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,5 +28,7 @@ Route::group(['middleware' => 'token:api-base'], function() {
     Route::put('activities/{id}', [ActivityController::class, 'update'])->whereNumber('id');
     Route::delete('activities/{id}', [ActivityController::class, 'destroy'])->whereNumber('id');
     Route::post('append-activity/{id}', [ActivityController::class, 'appendActivity'])->whereNumber('id');
+
+    Route::post('fulfill-seller-order', [ShippingController::class, 'fulfillSellerOrder']);
 });
 

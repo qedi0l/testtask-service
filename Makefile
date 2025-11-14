@@ -6,6 +6,10 @@ up:
 	docker-compose up -d
 down:
 	docker-compose down
+kill:
+	docker-compose kill
+kd:
+	docker-compose kill && docker-compose down
 migrate:
 	docker-compose exec app php artisan migrate
 rollback:
@@ -17,4 +21,7 @@ bash:
 seed:
 	docker-compose exec app php artisan db:seed
 swagger:
-	docker-compose exec app php artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider" && docker-compose exec app php artisan l5-swagger:generate
+	docker-compose exec app php artisan l5-swagger:generate
+publish:
+	docker-compose exec app php artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider" && docker-compose exec app php artisan vendor:publish --tag=laravel-kafka-config
+

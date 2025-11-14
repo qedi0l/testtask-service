@@ -20,4 +20,3 @@ yarn-error.log
 /.vscode
 .rr.yaml
 .rr.yaml~
-auth.json

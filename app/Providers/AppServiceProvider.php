@@ -2,21 +2,17 @@
 
 namespace App\Providers;
 
+use App\Contracts\ShippingServiceInterface;
+use App\Services\ShippingService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
-        //
+        $this->app->singleton(ShippingServiceInterface::class, ShippingService::class);
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         //
