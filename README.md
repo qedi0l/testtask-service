@@ -2,6 +2,7 @@
 
 ### Service class that implements ShippingServiceInterface interface location - App/Services
 api - swagger or `POST /api/fulfill-seller-order`
+amazon connection config - `config/services.php`
 
 ## Project setup
 1. Clone repo
