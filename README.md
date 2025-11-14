@@ -1,6 +1,7 @@
 # Service setup guide
 
 ### Service class that implements ShippingServiceInterface interface location - App/Services
+api - swagger or `POST /api/fulfill-seller-order`
 
 ## Project setup
 1. Clone repo
